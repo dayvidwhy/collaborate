@@ -1,0 +1,11 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "eslint.validate": [
+        "javascript",
+        "typescript",
+    ],
+    "eslint.experimental.useFlatConfig": true,
+    "eslint.workingDirectories": [{ "directory": "assets", "changeProcessCWD": true }]
+}

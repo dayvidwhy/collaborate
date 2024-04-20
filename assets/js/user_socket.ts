@@ -3,7 +3,6 @@
 
 // Bring in Phoenix channels client library:
 
-
 // And connect to the path in "lib/collaborate_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
 
@@ -54,43 +53,54 @@
 import { Socket } from "phoenix";
 
 const socket = (function () {
-  const textArea = document.querySelector("#text-input");
+    const textArea: HTMLTextAreaElement | null = document.querySelector("#text-input");
 
-  if (!textArea) {
-    return;
-  }
-
-  const localSocket = new Socket("/socket", {params: {token: window.userToken}});
-  const clientId = crypto.randomUUID();
-
-  localSocket.connect();
-
-  const channel = localSocket.channel("documents:lobby", {});
-
-  channel.join()
-    .receive("ok", resp => {
-      console.log("Joined successfully", resp)
-    })
-    .receive("error", resp => {
-      console.log("Unable to join", resp);
-    });
-    
-  textArea.addEventListener("keypress", event => {
-    console.log("Pushing key", event.key);
-    channel.push("new_msg", {
-      body: event.key,
-      client_id: clientId
-    });
-  });
-
-  channel.on("new_msg", payload => {
-    if (payload.client_id === clientId) {
-      return;
+    if (!textArea) {
+        return;
     }
-    textArea.value += payload.body;
-  });
 
-  return localSocket;
+    // @ts-ignore
+    const localSocket = new Socket("/socket", { params: { token: window.userToken } });
+    const clientId = crypto.randomUUID();
+
+    localSocket.connect();
+
+    const channel = localSocket.channel("documents:lobby", {});
+
+    channel.join()
+        .receive("ok", resp => {
+            console.log("Joined successfully", resp);
+        })
+        .receive("error", resp => {
+            console.log("Unable to join", resp);
+        });
+
+    textArea.addEventListener("keydown", ({ key }: KeyboardEvent) => {
+        console.log("Pushing key", key);
+        if (key.length === 1 || key === "Enter" || key === "Backspace") {
+            channel.push("new_msg", {
+                body: key,
+                client_id: clientId
+            });
+        }
+    });
+
+    channel.on("new_msg", payload => {
+        if (payload.client_id === clientId) {
+            return;
+        }
+        if (payload.body === "Enter") {
+            textArea.value += "\n";
+            return;
+        }
+        if (payload.body === "Backspace") {
+            textArea.value = textArea.value.slice(0, -1);
+            return;
+        }
+        textArea.value += payload.body;
+    });
+
+    return localSocket;
 })();
 
-export default socket
+export default socket;
