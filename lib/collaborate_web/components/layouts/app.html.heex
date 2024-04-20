@@ -1,0 +1,30 @@
+<div class="h-full flex flex-col">
+  <header class="w-full">
+    <nav class="w-full shadow-md">
+      <ul class="w-full flex flex-row">
+        <li>
+          <.link
+            navigate={~p"/"}
+            class="w-28 block text-center text-md py-4 px-4 text-slate-800 hover:text-slate-700 hover:bg-slate-200"
+          >
+            Home
+          </.link>
+        </li>
+        <li>
+          <.link
+            navigate={~p"/document"}
+            class="w-28 block text-center text-md py-4 px-4 text-slate-800 hover:text-slate-700 hover:bg-slate-200"
+          >
+            Documents
+          </.link>
+        </li>
+      </ul>
+    </nav>
+  </header>
+  <main class="flex-1 overflow-hidden">
+    <div class="mx-auto max-w-2xl">
+      <.flash_group flash={@flash} />
+      <%= @inner_content %>
+    </div>
+  </main>
+</div>
