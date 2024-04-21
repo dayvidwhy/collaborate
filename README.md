@@ -25,6 +25,7 @@ You can generate random secrets using the built in `mix phx.gen.secret [secret-l
 # inside container
 source .env
 mix local.hex
+mix deps.get
 mix ecto.create
 mix phx.server
 ```
