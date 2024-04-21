@@ -13,7 +13,7 @@ docker-compose up --build
 docker exec -it collaborate-app bash
 ```
 
-Copy the example env file and update the variables. You can generate secrets using the `mix phx.gen.secret [length]` command.
+Copy the example env file and update the variables.
 
 ```bash
 cp .env.example .env
