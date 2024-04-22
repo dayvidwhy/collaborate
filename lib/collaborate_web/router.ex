@@ -17,7 +17,7 @@ defmodule CollaborateWeb.Router do
   scope "/", CollaborateWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    get "/", PageController, :index
     get "/document", DocumentController, :index
   end
 
