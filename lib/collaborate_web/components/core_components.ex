@@ -237,9 +237,9 @@ defmodule CollaborateWeb.CoreComponents do
 
   def document(assigns) do
     ~H"""
-    <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 w-[700px]">
-        <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
+    <.form :let={f} for={@for} as={@as} {@rest} class="w-full">
+      <div class="space-y-8">
+        <div :for={action <- @actions} class="flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
         </div>
         <%= render_slot(@inner_block, f) %>

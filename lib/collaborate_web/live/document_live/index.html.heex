@@ -1,28 +1,26 @@
-<.header>
-  Listing Documents
-  <:actions>
+<div class="container mx-auto mt-10">
+  <.header>
     <.link patch={~p"/documents/new"}>
       <.button>New Document</.button>
     </.link>
-  </:actions>
-</.header>
+  </.header>
 
-<.table
-  id="documents"
-  rows={@streams.documents}
-  row_click={fn {_id, document} -> JS.navigate(~p"/documents/#{document}") end}
->
-  <:col :let={{_id, document}} label="Title"><%= document.title %></:col>
-  <:col :let={{_id, document}} label="Content"><%= document.content %></:col>
-  <:action :let={{id, document}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: document.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
-    >
-      Delete
-    </.link>
-  </:action>
-</.table>
+  <.table
+    id="documents"
+    rows={@streams.documents}
+    row_click={fn {_id, document} -> JS.navigate(~p"/documents/#{document}") end}
+  >
+    <:col :let={{_id, document}} label="Title"><%= document.title %></:col>
+    <:action :let={{id, document}}>
+      <.link
+        phx-click={JS.push("delete", value: %{id: document.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        Delete
+      </.link>
+    </:action>
+  </.table>
+</div>
 
 <.modal :if={@live_action in [:new, :edit]} id="document-modal" show on_cancel={JS.patch(~p"/documents")}>
   <.live_component

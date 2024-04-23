@@ -1,9 +1,10 @@
-<.back navigate={~p"/documents"}>Back to documents</.back>
-<.live_component
-  module={CollaborateWeb.DocumentLive.DocumentComponent}
-  id={@document.id}
-  title={@page_title}
-  action={:edit}
-  document={@document}
-  patch={~p"/documents/#{@document}"}
-/>
+<div class="container mx-auto mt-10">
+  <.live_component
+    module={CollaborateWeb.DocumentLive.DocumentComponent}
+    id={@document.id}
+    title={@page_title}
+    action={:edit}
+    document={@document}
+    patch={~p"/documents/#{@document}"}
+  />
+</div>
