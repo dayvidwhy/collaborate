@@ -53,7 +53,7 @@
 import { Socket } from "phoenix";
 
 const socket = (function () {
-    const textArea: HTMLTextAreaElement | null = document.querySelector("#text-input");
+    const textArea: HTMLTextAreaElement | null = document.querySelector("textarea[data-target='document-editor.content']");
 
     if (!textArea) {
         return;
@@ -86,6 +86,7 @@ const socket = (function () {
     });
 
     channel.on("new_msg", payload => {
+        console.log("Got key", payload.body);
         if (payload.client_id === clientId) {
             return;
         }

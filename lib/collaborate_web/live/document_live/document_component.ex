@@ -1,4 +1,4 @@
-defmodule CollaborateWeb.DocumentLive.FormComponent do
+defmodule CollaborateWeb.DocumentLive.DocumentComponent do
   use CollaborateWeb, :live_component
 
   alias Collaborate.Documents
@@ -6,13 +6,8 @@ defmodule CollaborateWeb.DocumentLive.FormComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
-      <.header>
-        <%= @title %>
-        <:subtitle>Use this form to manage document records in your database.</:subtitle>
-      </.header>
-
-      <.simple_form
+    <div class="flex flex-col items-center">
+      <.document
         for={@form}
         id="document-form"
         phx-target={@myself}
@@ -20,11 +15,11 @@ defmodule CollaborateWeb.DocumentLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:title]} type="text" label="Title" />
-        <.input field={@form[:content]} type="textarea" label="Content" />
+        <.input field={@form[:content]} type="documentarea" label="Content" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Document</.button>
         </:actions>
-      </.simple_form>
+      </.document>
     </div>
     """
   end
@@ -53,14 +48,14 @@ defmodule CollaborateWeb.DocumentLive.FormComponent do
     save_document(socket, socket.assigns.action, document_params)
   end
 
-  defp save_document(socket, :new, document_params) do
-    case Documents.create_document(document_params) do
+  defp save_document(socket, :edit, document_params) do
+    case Documents.update_document(socket.assigns.document, document_params) do
       {:ok, document} ->
         notify_parent({:saved, document})
 
         {:noreply,
          socket
-         |> put_flash(:info, "Document created successfully")
+         |> put_flash(:info, "Document updated successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->

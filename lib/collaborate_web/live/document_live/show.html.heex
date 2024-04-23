@@ -1,24 +1,9 @@
 <.back navigate={~p"/documents"}>Back to documents</.back>
-<.header>
-  Title: <%= @document.title %>
-  <:actions>
-    <.link patch={~p"/documents/#{@document}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit document</.button>
-    </.link>
-  </:actions>
-</.header>
-
-<div class="w-[700px] h-[990px] mx-auto bg-white my-8 border border-slate-300">
-  <textarea id="text-input" class="w-full h-full p-12 border-slate-600 border-none resize-none focus:ring-0"><%= @document.content %></textarea>
-</div>
-
-<.modal :if={@live_action == :edit} id="document-modal" show on_cancel={JS.patch(~p"/documents/#{@document}")}>
-  <.live_component
-    module={CollaborateWeb.DocumentLive.FormComponent}
-    id={@document.id}
-    title={@page_title}
-    action={@live_action}
-    document={@document}
-    patch={~p"/documents/#{@document}"}
-  />
-</.modal>
+<.live_component
+  module={CollaborateWeb.DocumentLive.DocumentComponent}
+  id={@document.id}
+  title={@page_title}
+  action={:edit}
+  document={@document}
+  patch={~p"/documents/#{@document}"}
+/>

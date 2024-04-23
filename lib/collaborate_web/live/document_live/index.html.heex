@@ -14,12 +14,6 @@
 >
   <:col :let={{_id, document}} label="Title"><%= document.title %></:col>
   <:col :let={{_id, document}} label="Content"><%= document.content %></:col>
-  <:action :let={{_id, document}}>
-    <div class="sr-only">
-      <.link navigate={~p"/documents/#{document}"}>Show</.link>
-    </div>
-    <.link patch={~p"/documents/#{document}/edit"}>Edit</.link>
-  </:action>
   <:action :let={{id, document}}>
     <.link
       phx-click={JS.push("delete", value: %{id: document.id}) |> hide("##{id}")}
