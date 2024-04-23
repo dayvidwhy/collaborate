@@ -1,0 +1,42 @@
+<.header>
+  Listing Documents
+  <:actions>
+    <.link patch={~p"/documents/new"}>
+      <.button>New Document</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="documents"
+  rows={@streams.documents}
+  row_click={fn {_id, document} -> JS.navigate(~p"/documents/#{document}") end}
+>
+  <:col :let={{_id, document}} label="Title"><%= document.title %></:col>
+  <:col :let={{_id, document}} label="Content"><%= document.content %></:col>
+  <:action :let={{_id, document}}>
+    <div class="sr-only">
+      <.link navigate={~p"/documents/#{document}"}>Show</.link>
+    </div>
+    <.link patch={~p"/documents/#{document}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, document}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: document.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="document-modal" show on_cancel={JS.patch(~p"/documents")}>
+  <.live_component
+    module={CollaborateWeb.DocumentLive.FormComponent}
+    id={@document.id || :new}
+    title={@page_title}
+    action={@live_action}
+    document={@document}
+    patch={~p"/documents"}
+  />
+</.modal>

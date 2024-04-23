@@ -10,6 +10,7 @@ defmodule CollaborateWeb.DocumentsChannel do
     end
   end
 
+  @impl true
   def handle_in("new_msg", %{"body" => body, "client_id" => client_id}, socket) do
     broadcast(socket, "new_msg", %{body: body, client_id: client_id})
     {:noreply, socket}
